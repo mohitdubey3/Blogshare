@@ -1,0 +1,111 @@
+﻿<style>
+    .text-gradient {
+        background: linear-gradient(45deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .bg-primary-soft {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .post-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,0.1) !important;
+        }
+
+    .form-control:focus {
+        box-shadow: none;
+    }
+</style>
+@using BlogShare.Helper
+@model Post
+@{
+    ViewData["Title"] = "Home";
+    var content = RemoveHtmlTagHel.RemoveHtmlTags(Model.Content);
+}
+
+<header class="py-5 bg-light border-bottom mb-5">
+    <div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-8 col-xl-7 text-center">
+                <div class="mb-2">
+                    <span class="badge bg-primary-soft text-primary text-uppercase fw-bold pb-2 px-3 rounded-pill">Explore & Create the Blogs</span>
+                </div>
+                <h1 class="display-3 fw-bolder mb-3">Insights for the <span class="text-primary text-gradient">Curious Mind.</span></h1>
+                <p class="lead fw-normal text-muted mb-5">Explore a world of stories, tutorials, and perspectives. From deep-tech dives to creative lifestyle tips—if it's interesting, it's here.</p>
+                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                    <a class="btn btn-primary btn-lg px-4 me-sm-3 fw-bold shadow" asp-controller="Blog" asp-action="Index">Start Reading</a>
+                    <a class="btn btn-outline-dark btn-lg px-4" asp-controller="Blog" asp-action="Create">Share Your Blog</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container px-5 my-5">
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bolder mb-0">Trending Blog 🆕</h2>
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bolder mb-0 text-center">Popular Blogs 👇</h2>
+        </div>
+    </div>
+
+    <div class="row gx-5">
+        <div class="col-lg-7 mb-5">
+            <div class="card h-100 shadow border-0 overflow-hidden post-card">
+                <img class="card-img-top" src="@Model.FeatureImagePath" alt="@Model.Title" style="height: 400px; object-fit: cover;" />
+                <div class="card-body p-4">
+                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">New Comming...</div>
+                    <a class="text-decoration-none link-dark stretched-link" asp-controller="Blog" asp-action="Details" asp-route-id="@Model.Id">
+                        <h2 class="card-title h1 fw-bold">
+                            @Model.Title
+                        </h2>
+                    </a>
+                    <p class="card-text text-muted mb-4">
+                        @(content.Length > 900 ? content.Substring(0, 900) + "..." : content)
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <span class="rounded-circle me-3" width="40">🧑‍💻</span>
+                        <div class="small">
+                            <div class="fw-bold">@Model.Author</div>
+                            <div class="text-muted">@Model.PublishedDate.ToString("MMM dd, yyyy")</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            @foreach (var feed in ViewBag.feeds)
+            {
+                <div class="card mb-4 shadow-sm border-0 post-card">
+                    <div class="card-body p-4">
+                        <div class="fw-bold mb-1">
+                            @feed.Title
+                        </div>
+                        <a class="text-decoration-none link-dark stretched-link" asp-controller="Blog" asp-action="Details" asp-route-id="@feed.Id">
+                            <h5 class="small text-muted">
+                                @{
+                                    var content = RemoveHtmlTagHel.RemoveHtmlTags(feed.Content);
+                                    @(content.Length > 80 ? content.Substring(0, 80) + "..." : content)
+                                   }
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            }
+            <div class="card bg-primary text-white border-0 shadow-sm p-4 text-center">
+                <h4 class="fw-bold">Share Your Knowledge to Others.</h4>
+                <p class="small opacity-75">Join our community of contributors and reach thousands of readers.</p>
+                <a class="btn btn-light btn-sm fw-bold px-4 rounded-pill" asp-controller="Blog" asp-action="Create">Write a Post</a>
+            </div>
+        </div>
+    </div>
+</div>

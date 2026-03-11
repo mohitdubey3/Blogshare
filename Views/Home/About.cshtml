@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "About Us";
+}
+
+<style>
+    .border-start:hover {
+        background-color: #f8f9fa !important;
+        transition: 0.3s ease-in-out;
+    }
+</style>
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-primary mb-3">This Is The Place Where <br /><span class="text-dark">You Can Find The Blog.</span></h1>
+                <p class="lead text-muted">
+                    Welcome to <strong>Blog Share Plateform</strong>, a digital sanctuary for thinkers, creators, and curious minds.
+                    We believe that everyone has a story worth sharing and an interest worth exploring.
+                </p>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <img src="~/blog.png" width="300" height="300" class="rounded-3 float-lg-end" alt="Blogging" />
+            </div>
+        </div>
+
+        <hr class="my-5 shadow-sm">
+
+        <div class="row g-4 py-3">
+            <div class="col-md-6">
+                <div class="p-4 border-start border-4 border-primary bg-light h-100">
+                    <h3 class="fw-bold">Read & Discover</h3>
+                    <p class="text-secondary">
+                        Dive into a curated feed of articles tailored specifically to your interests.
+                        Our platform uses smart categorization to ensure you spend less time searching and more time learning in easy words.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4 border-start border-4 border-success bg-light h-100">
+                    <h3 class="fw-bold">Create & Inspire</h3>
+                    <p class="text-secondary">
+                        Ready to share your expertise? Our intuitive editor makes it easy to publish professional-looking posts.
+                        Whether it's a technical deep-dive or a personal hobby, your voice has a platform here.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-dark text-white rounded-4 p-5 mt-5 text-center shadow">
+            <h2 class="fw-bold mb-3">Ready to join the conversation?</h2>
+            <p class="mb-4 opacity-75">Start your journey today by exploring trending posts or creating your first story.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-action="Index" asp-controller="Blog" class="btn btn-primary btn-lg px-4 gap-3">Browse Feed</a>
+                <a asp-action="Create" asp-controller="Blog" class="btn btn-outline-light btn-lg px-4">Start Writing</a>
+            </div>
+        </div>
+    </div>
+</section>

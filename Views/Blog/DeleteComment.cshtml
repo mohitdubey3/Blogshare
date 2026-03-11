@@ -1,0 +1,33 @@
+﻿@model Comment
+
+@{
+    ViewData["Title"] = "Delete Comment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-3">Delete Comment</h3>
+                <p class="text-muted mb-4">
+                    Are you sure you want to delete this comment?
+                </p>
+
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <p class="card-text"><strong>@Model.UserName</strong></p>
+                        <p class="card-text text-muted small mb-2">@Model.CommentDate.ToString("MMMM dd, yyyy")</p>
+                        <hr />
+                        <p class="card-text">@Model.Content</p>
+                    </div>
+                </div>
+
+                <form asp-controller="Blog" asp-action="DeleteConfirmComment" method="post" class="mb-3">
+                    <input asp-for="@Model.Id" hidden />
+                    <button type="submit" class="btn btn-danger me-2">Delete Comment</button>
+                    <a asp-action="Index" asp-controller="Blog" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

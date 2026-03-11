@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+<style>
+    .form-control:focus {
+        background-color: #fff !important;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    }
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-4 bg-primary text-white p-5 d-flex flex-column justify-content-center">
+                        <h2 class="fw-bold mb-4">Get in Touch</h2>
+                        <p class="mb-4 opacity-75">Have a question or facing an issue? Feel free to reach out. Our team usually responds within 24 hours.</p>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-envelope-fill me-3"></i>
+                            <span>support@blogshare.com</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-geo-alt-fill me-3"></i>
+                            <span>Dehri-On-Sone, Bihar (821307)</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 p-5 bg-white">
+                        <h3 class="mb-4 fw-bold">Send us a Message</h3>
+                        <form method="post">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-semibold">Your Name</label>
+                                    <input type="text" class="form-control form-control-lg bg-light border-0" id="name" placeholder="Enter Name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-semibold">Email Address</label>
+                                    <input type="email" class="form-control form-control-lg bg-light border-0" id="email" placeholder="Enter Email" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="content" class="form-label fw-semibold">How can we help?</label>
+                                    <textarea class="form-control bg-light border-0" id="content" rows="5" placeholder="Tell us about your issue or suggestion..." required></textarea>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm rounded-3">
+                                        Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

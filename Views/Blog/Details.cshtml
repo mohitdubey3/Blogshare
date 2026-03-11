@@ -1,0 +1,111 @@
+﻿@model Post
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="mb-4">
+    <a asp-action="Index" asp-controller="Blog" class="btn btn-secondary">Back to Posts</a>
+</div>
+<div class="text-end">
+    <a class="btn btn-secondary my-3" asp-controller="Blog" asp-action="Update" asp-route-id="@Model.Id">Edit Post</a>
+    <a class="btn btn-danger mx-3 my-3" asp-controller="Blog" asp-action="Delete" asp-route-id="@Model.Id">Delete Post</a>
+</div>
+
+
+<h1 class="fw-bold">@Model.Title</h1>
+
+<div class="mb-3">
+    <p>
+        <strong>By:</strong> @Model.Author | 
+        <strong>Published:</strong> @Model.PublishedDate.ToString("MMMM dd, yyyy") |
+        <strong>Category:</strong> @Model.Category.CategoryName
+    </p>
+</div>
+
+<img src="@Model.FeatureImagePath" alt="@Model.Title" class="img-fluid mb-4" width: 100%; height: 500px; />
+<hr/>
+
+<div>
+    @Html.Raw(Model.Content)
+</div>
+
+<hr />
+
+<h3>Comments</h3>
+
+@if (Model.Comments.Any())
+{
+    <div id="commentSection" class="mb-4">
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">@comment.UserName</h5>
+                    <p class="card-text text-muted small">@comment.CommentDate.ToString("MMMM dd, yyyy")</p>
+                    <p class="card-text">@comment.Content</p>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Blog" asp-action="DeleteComment" asp-route-id="@comment.Id" class="btn btn-sm btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="text-muted">No comments yet. Be the first to comment!</p>
+}
+
+<h4>Add a Comment</h4>
+
+<form id="commentForm" class="mb-4">
+    <div class="mb-3">
+        <label for="Username" class="form-label">Name</label>
+        <input type="text" id="Username" name="Username" required class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="Content" class="form-label">Comment</label>
+        <textarea id="Content" name="Content" rows="3" required class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Comment</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+            $("#commentForm").on('submit', function(event){
+                event.preventDefault();
+                var userName = $("#Username").val();
+                var content = $("#Content").val();
+                var postId = @Model.Id;
+
+                $.ajax({
+                    url: '@Url.Action("AddComment", "Blog")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Username: userName,
+                        Content: content,
+                        PostId: postId
+                    }),
+                    success: function(response){
+                        $('#commentForm')[0].reset();
+                        $('#commentSection').append(
+                            `<div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">${response.username}</h5>
+                                    <p class="card-text text-muted small">${response.commentDate}</p>
+                                    <p class="card-text">${response.content}</p>
+                                </div>
+                            </div>`
+                        );
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<IdentityUser> UserManager;
+@inject SignInManager<IdentityUser> SignInManager;
+
+<ul class="navbar-nav ms-auto">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <span class="navbar-text me-3 bi bi-person me-2" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor:pointer">  @User.Identity?.Name</span>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="btn btn-link nav-link text-ligh">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+    }
+</ul>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> User : @User.Identity?.Name</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a type="button" class="btn btn-primary" asp-action="ChangePassword" asp-controller="Account">Update Your Password</a>
+            </div>
+        </div>
+    </div>
+</div>
