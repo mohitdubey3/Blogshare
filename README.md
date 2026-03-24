@@ -25,3 +25,5 @@
 2. Update the `DefaultConnection` string in `appsettings.json`.
 3. Run `Update-Database` in the Package Manager Console.
 4. Press `F5` to run the application.
+
+![Screenshot_24-3-2026_13320_localhost](https://github.com/user-attachments/assets/bf9a2921-7694-43d5-a592-571a3b49e3b6)
