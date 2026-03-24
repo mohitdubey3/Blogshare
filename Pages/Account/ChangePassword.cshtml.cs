@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace YourApp.Areas.Identity.Pages.Account
+namespace BlogShare.Areas.Identity.Pages.Account
 {
     public class ChangePasswordModel : PageModel
     {
