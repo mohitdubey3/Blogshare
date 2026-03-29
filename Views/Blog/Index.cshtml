@@ -6,30 +6,30 @@
 }
 @if (ViewData["msg"] != null)
 {
-       <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         @ViewData["msg"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    </div>
 }
 
 <div class="row mb-4">
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-12 mb-4">
         <h1>Blogs 📖</h1>
     </div>
-    <ul class ="col-md-4 navbar-nav align-items-center">
+    <ul class="col-md-4 col-sm-12 mb-4 navbar-nav align-items-center">
         <li class="nav-item dropdown">
-        <a class="btn btn-outline-secondary" id="MenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Search Blogs By Category
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 rounded-3" aria-labelledby="MenuLink">
-            @foreach (var category in ViewBag.Cat)
-            {
+            <a class="btn btn-outline-secondary" id="MenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Search Blogs By Category
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 rounded-3" aria-labelledby="MenuLink">
+                @foreach (var category in ViewBag.Cat)
+                {
                     <li><a class="dropdown-item py-2" asp-controller="Blog" asp-action="Index" asp-route-categoryId="@category.Id">@category.CategoryName</a></li>
-            }
-        </ul>
-    </li>
+                }
+            </ul>
+        </li>
     </ul>
-    <div class="col-md-4 text-end">
+    <div class="col-md-4 col-sm-12 mb-4 text-end">
         <a class="btn btn-primary" asp-controller="Blog" asp-action="Create">Create New Post</a>
     </div>
 </div>
@@ -43,7 +43,7 @@
         {
             <div class="col">
                 <div class="card h-100">
-                    <img src="@post.FeatureImagePath" class="card-img-top" alt="@post.Title"/>
+                    <img src="@post.FeatureImagePath" class="card-img-top" alt="@post.Title" />
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@post.Title</h5>
                         <p class="card-text text-muted small">
@@ -52,9 +52,9 @@
                         <p class="card-text text-muted">
                             <strong>Category:</strong> @post.Category?.CategoryName
                         </p>
-   
+
                         <p class="card-text flex-grow-1">
-                            @{                            
+                            @{
                                 var content = RemoveHtmlTagHel.RemoveHtmlTags(post.Content);
                                 @(content.Length > 90 ? content.Substring(0, 90) + "..." : content)
                             }

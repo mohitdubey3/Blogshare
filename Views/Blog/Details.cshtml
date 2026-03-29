@@ -1,79 +1,128 @@
 ﻿@model Post
-
 @{
     ViewData["Title"] = Model.Title;
 }
+<div class="bg-body-secondary min-vh-100">
 
-<div class="mb-4">
-    <a asp-action="Index" asp-controller="Blog" class="btn btn-secondary">Back to Posts</a>
-</div>
-<div class="text-end">
-    <a class="btn btn-secondary my-3" asp-controller="Blog" asp-action="Update" asp-route-id="@Model.Id">Edit Post</a>
-    <a class="btn btn-danger mx-3 my-3" asp-controller="Blog" asp-action="Delete" asp-route-id="@Model.Id">Delete Post</a>
-</div>
+    <div class="progress position-fixed top-0 start-0 w-100 rounded-0 z-3" id="readingProgress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-primary" id="readingProgressBar"></div>
+    </div>
 
+    <div class="container-fluid py-4 py-lg-5 px-3 px-lg-4">
+        <div class="row justify-content-center g-0">
+            <div class="col-12 col-lg-10 col-xl-10">
 
-<h1 class="fw-bold">@Model.Title</h1>
-
-<div class="mb-3">
-    <p>
-        <strong>By:</strong> @Model.Author | 
-        <strong>Published:</strong> @Model.PublishedDate.ToString("MMMM dd, yyyy") |
-        <strong>Category:</strong> @Model.Category.CategoryName
-    </p>
-</div>
-
-<img src="@Model.FeatureImagePath" alt="@Model.Title" class="img-fluid mb-4" width: 100%; height: 500px; />
-<hr/>
-
-<div>
-    @Html.Raw(Model.Content)
-</div>
-
-<hr />
-
-<h3>Comments</h3>
-
-@if (Model.Comments.Any())
-{
-    <div id="commentSection" class="mb-4">
-        @foreach (var comment in Model.Comments)
-        {
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">@comment.UserName</h5>
-                    <p class="card-text text-muted small">@comment.CommentDate.ToString("MMMM dd, yyyy")</p>
-                    <p class="card-text">@comment.Content</p>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+                    <a onclick="history.back();" class="btn btn-outline-secondary rounded-pill">
+                        <i class="bi bi-arrow-left me-1"></i> Back to posts
+                    </a>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-controller="Blog" asp-action="DeleteComment" asp-route-id="@comment.Id" class="btn btn-sm btn-danger">Delete</a>
+                        <a asp-controller="Blog" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-warning btn-sm rounded-pill">
+                            <i class="bi bi-pencil me-1"></i> Edit
+                        </a>
+                        <a asp-action="Delete" asp-controller="Blog" asp-route-id="@Model.Id" class="btn btn-danger btn-sm rounded-pill">
+                            <i class="bi bi-trash me-1"></i> Delete
+                        </a>
                     }
+
                 </div>
+
+                <div class="card shadow-sm border mb-4">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap align-items-center gap-3 gap-lg-4 mb-0">
+                            <div class="text-uppercase text-muted small fw-semibold mb-0">Text size</div>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Font size">
+                                <button type="button" class="btn btn-outline-secondary" data-size="small" title="Small">A</button>
+                                <button type="button" class="btn btn-outline-secondary active" data-size="normal" title="Normal"><strong>A</strong></button>
+                                <button type="button" class="btn btn-outline-secondary" data-size="large" title="Large"><strong class="fs-6">A</strong></button>
+                                <button type="button" class="btn btn-outline-secondary" data-size="xlarge" title="Extra large"><strong class="fs-5">A</strong></button>
+                                <button type="button" class="btn btn-outline-secondary" id="resetFontSize" title="Reset" aria-label="Reset font size"><i class="bi bi-arrow-counterclockwise"></i></button>
+                            </div>
+                            <div class="vr d-none d-sm-block text-muted"></div>
+                            <div class="text-uppercase text-muted small fw-semibold mb-0">Theme</div>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Theme">
+                                <button type="button" class="btn btn-outline-secondary active" id="lightModeBtn" title="Light"><i class="bi bi-sun"></i></button>
+                                <button type="button" class="btn btn-outline-secondary" id="darkModeBtn" title="Dark"><i class="bi bi-moon-stars"></i></button>
+                            </div>
+                            <div class="vr d-none d-sm-block text-muted"></div>
+                            <button type="button" class="btn btn-outline-success btn-sm" id="shareBtn" title="Share this post">
+                                <i class="bi bi-share me-1"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <article class="card shadow border-0 mb-5">
+                    <div class="card-body p-4 p-lg-5">
+                        <header class="border-bottom pb-4 mb-4">
+                            <h1 class="display-6 fw-bold mb-3">@Model.Title</h1>
+                            <div class="d-flex flex-wrap gap-3 text-muted small">
+                                <span><i class="bi bi-person me-1"></i><strong class="text-body">@Model.Author</strong></span>
+                                <span><i class="bi bi-calendar3 me-1"></i> @Model.PublishedDate.ToString("MMMM dd, yyyy")</span>
+                                <span class="badge text-bg-warning text-dark rounded-pill px-3">@Model.Category.CategoryName</span>
+                            </div>
+                        </header>
+
+                        <figure class="mb-4">
+                            <img src="@Model.FeatureImagePath" alt="@Model.Title" loading="lazy" style="width: 100%; height: 500px;">
+                        </figure>
+
+                        <div class="fs-5 lh-lg" id="blogContent">
+                            @Html.Raw(Model.Content)
+                        </div>
+                    </div>
+                </article>
+
+                <h2 class="h4 fw-bold mb-4" id="comments-heading">Discussion</h2>
+                @if (Model.Comments.Any())
+                {
+                    <div id="commentSection" class="mb-4">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex gap-3">
+                                        <i class="bi bi-person-circle text-primary fs-2 flex-shrink-0" aria-hidden="true"></i>
+                                        <div class="flex-grow-1 min-w-0">
+                                            <h5 class="card-title">@comment.UserName</h5>
+                                            <p class="card-text text-muted small">@comment.CommentDate.ToString("MMMM dd, yyyy")</p>
+                                            <p class="card-text mb-4">@comment.Content</p>
+                                        </div>
+                                    </div>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-controller="Blog" asp-action="DeleteComment" asp-route-id="@comment.Id" class="btn btn-sm btn-danger">Delete</a>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No comments yet. Be the first to comment!</p>
+                }
+
+                <h4 class="h5 fw-semibold mb-3">Add a Comment</h4>
+
+                <form id="commentForm" class="mb-4">
+                    <div class="mb-3">
+                        <label for="Username" class="form-label">Name</label>
+                        <input type="text" id="Username" name="Username" required class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Content" class="form-label">Comment</label>
+                        <textarea id="Content" name="Content" rows="3" required class="form-control"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                </form>
             </div>
-        }
-    </div>
-}
-else
-{
-    <p class="text-muted">No comments yet. Be the first to comment!</p>
-}
-
-<h4>Add a Comment</h4>
-
-<form id="commentForm" class="mb-4">
-    <div class="mb-3">
-        <label for="Username" class="form-label">Name</label>
-        <input type="text" id="Username" name="Username" required class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label for="Content" class="form-label">Comment</label>
-        <textarea id="Content" name="Content" rows="3" required class="form-control"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit Comment</button>
-</form>
-
+        </div> 
+    </div> 
+</div> 
 @section Scripts {
     <script>
         $(document).ready(function(){

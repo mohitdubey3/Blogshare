@@ -1,8 +1,6 @@
 using BlogShare.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Shared;
-using System.Threading.Tasks;
 
 namespace BlogShare.Controllers
 {
